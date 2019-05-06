@@ -14,7 +14,7 @@
 
 <!-- The sidebar will have a input box and the search button -->
 <div class="sidebar">
-    
+    <button class="create" id="add_property">Add Property</button>
     <table id="table_id" class="display">
     <thead>
         <tr>
@@ -34,6 +34,10 @@
 
 
 <script>
+
+$('#add_property').click(function() {
+    google.script.run.add_property();
+ });
 
 function displayTable(data) {
   $('#table_id').DataTable( {

@@ -11,6 +11,17 @@ function onOpen() {
   .addToUi();  // Run the showSidebar function when someone clicks the menu
 }
 
+function add_property(){ 
+  //Call the HTML file and set the width and height
+  var html = HtmlService.createHtmlOutputFromFile("add_new")
+    .setWidth(450)
+    .setHeight(300);
+  
+  //Display the dialog
+  var dialog = ui.showModalDialog(html, "Add new property key value");
+ 
+};
+
 
 function findCustomPropertiesFromResult(data) {
     var foundData={};
@@ -48,6 +59,18 @@ function getCustomProperties() {
   Logger.log(propertyData);
   return propertyData['data'];
 }
+
+function add_property(){ 
+  //Call the HTML file and set the width and height
+  var html = HtmlService.createHtmlOutputFromFile("add_new")
+    .setWidth(450)
+    .setHeight(300);
+  
+  //Display the dialog
+  DocumentApp.getUi().showModalDialog(html,"Add new property key value");
+ // var dialog = ui.showModalDialog(html, "Add new property key value");
+ 
+};
 
 // function addCustomProperty(fileId) {
 //   var property = {
