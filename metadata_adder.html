@@ -1,0 +1,74 @@
+<!-- Use this CSS stylesheet to ensure that add-ons styling 
+     matches the default Google Docs styles -->
+<link href="https://ssl.gstatic.com/docs/script/css/add-ons.css"
+     rel="stylesheet"> 
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+</script>
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+
+
+<!-- The sidebar will have a input box and the search button -->
+<div class="sidebar">
+    
+    <table id="table_id" class="display">
+    <thead>
+        <tr>
+            <th>Key </th>
+            <th>Value</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+
+</div>
+
+
+
+<script>
+
+function displayTable(data) {
+  $('#table_id').DataTable( {
+    data: data,
+    columns: [
+        { data: 'key' },
+        { data: 'value' },
+        {
+            mRender: function (data, type, row) {
+                    return '<a href="">edit</a>';
+            }
+        },
+        {
+            mRender: function (data, type, row) {
+                    return '<a href="">delete</a>';
+            }
+        }
+    ],
+        columnDefs: [
+        { targets: [2,3], orderable: false}
+      ]
+  } );
+}
+
+
+
+      
+ // Attach click handlers after the Sidebar has loaded in Google Docs
+ $(function() {
+
+  google.script.run.withSuccessHandler(displayTable)
+          .processMetadataForm();
+
+  //google.script.run.insertGoogleMap($('#search').val());
+   
+ });
+</script>
+
