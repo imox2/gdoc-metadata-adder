@@ -93,7 +93,7 @@
 $(document).on('click', '.edit_line', function(){
    var key = $(this).data("key");
    var value = $(this).data("value");
-   selectPane("edit_pane");
+   populateEditPane(key,value);
   });
 
 
@@ -102,9 +102,15 @@ $(document).on('click', '#add_property', function(){
    selectPane("add_pane");
   });
 
+function populateEditPane(key,value) {
+  $('#edit_key').val(key);
+  $('#edit_value').val(value);
+  selectPane("edit_pane");
+}
+
 function selectPane(pane_id) {
   var pane_id_array = ["add_pane","edit_pane","data_pane"];
-  console.log("selectPane",pane_id);
+
   for(var pane_array_key in pane_id_array) {
     if(pane_id_array[pane_array_key]==pane_id) {
       $('#'+pane_id).show();
