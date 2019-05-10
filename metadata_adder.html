@@ -1,14 +1,5 @@
 <!-- Use this CSS stylesheet to ensure that add-ons styling 
      matches the default Google Docs styles -->
-<link href="https://ssl.gstatic.com/docs/script/css/add-ons.css"
-     rel="stylesheet"> 
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
-</script>
-  
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
 <style type="text/css">
   .float-right {
@@ -26,10 +17,26 @@
   }
 </style>
 
+<div id="loading_pane">
+  <h3 class="center">Loading...</h3>
+</div>
+
+<link href="https://ssl.gstatic.com/docs/script/css/add-ons.css"
+     rel="stylesheet"> 
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+</script>
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+
+
 
 
 <!-- The sidebar will have a input box and the search button -->
-<div class="sidebar" id="data_pane">
+<div class="sidebar" id="data_pane" style="display: none;">
   <div class="float-right">
     <button class="create" id="add_property">Add Property</button>
   </div>
@@ -151,6 +158,9 @@ function displayTable(data) {
         { targets: [2,3], orderable: false}
       ]
   } );
+
+  $('#loading_pane').hide();
+  $('#data_pane').show();
 }
 
 
@@ -158,7 +168,7 @@ function displayTable(data) {
       
  // Attach click handlers after the Sidebar has loaded in Google Docs
  $(function() {
-
+  
   google.script.run.withSuccessHandler(displayTable)
           .getCustomProperties();
 
