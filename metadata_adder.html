@@ -50,7 +50,7 @@
   </div> 
   <table id="table_id" class="display">
     <thead>
-      <tr>
+      <tr id="show_key_value_header">
           <th>Key </th>
           <th>Value</th>
           <th></th>
@@ -200,6 +200,8 @@ function selectPane(pane_id) {
 
 function reloadDataPane(reload=1) {
   if(reload) {
+    $('#loading_pane').show();
+    $('#show_key_value_header').hide();
     $('#table_id').DataTable().clear().destroy();
     //$('#table_id').empty();
 
@@ -216,6 +218,8 @@ function displayTable(data) {
   var status = data.status;
   data = data.data
   if(status==1) {
+    $('#no_property_msg').hide();
+
     $('#table_id').DataTable( {
     data: data,
     columns: [
@@ -244,11 +248,12 @@ function displayTable(data) {
   } );
 
   $('#loading_pane').hide();
+  $('#show_key_value_header').show();
   $('#data_pane').show();
   }
   else {
     $('#loading_pane').hide();
-    $('#table_id').empty();
+    $('#show_key_value_header').hide();
     $('#data_pane').show();
     $('#no_property_msg').show();
   }
