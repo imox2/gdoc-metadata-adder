@@ -13,7 +13,7 @@
 
 
 <!-- The sidebar will have a input box and the search button -->
-<div class="sidebar">
+<div class="sidebar" id="data_pane">
     <button class="create" id="add_property">Add Property</button>
     <table id="table_id" class="display">
     <thead>
@@ -31,6 +31,30 @@
 
 </div>
 
+<div id="edit_pane" style="display: none;">
+
+<div class="form-group">
+  <span class="current">Edit property</span>
+  <label for="city">City</label>
+  <input type="text" id="city" style="width: 150px;">
+</div>
+<div class="form-group">
+  <label for="city">City</label>
+  <input type="text" id="city" style="width: 150px;">
+</div>
+  </div>
+
+<div id="add_pane" style="display: none;">
+    <span class="current">Add property</span>
+<div class="form-group">
+  <label for="city">City</label>
+  <input type="text" id="city" style="width: 150px;">
+</div>
+<div class="form-group">
+  <label for="city">City</label>
+  <input type="text" id="city" style="width: 150px;">
+</div>
+  </div>
 
 
 <script>
@@ -38,8 +62,22 @@
 $(document).on('click', '.edit_line', function(){
    var key = $(this).data("key");
    var value = $(this).data("value");
-  
+   selectPane("edit_pane");
   });
+
+function selectPane(pane_id) {
+  var pane_id_array = ["add_pane","edit_pane","data_pane"];
+  console.log("selectPane",pane_id);
+  for(var pane_array_key in pane_id_array) {
+    if(pane_id_array[pane_array_key]==pane_id) {
+      $('#'+pane_id).show();
+    }
+    else {
+      $('#'+pane_id_array[pane_array_key]).hide();
+    }
+  }
+  
+}
 
 $('#add_property').click(function() {
     google.script.run.add_property();
