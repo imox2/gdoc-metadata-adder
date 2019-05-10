@@ -10,51 +10,82 @@
   
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
+<style type="text/css">
+  .float-right {
+    float: right;
+    margin-bottom: 8%;
+  }
+
+  .center {
+    position: relative;
+    left: 69px;
+  }
+
+  .margin-bottom {
+    margin-bottom: 4%
+  }
+</style>
+
 
 
 <!-- The sidebar will have a input box and the search button -->
 <div class="sidebar" id="data_pane">
+  <div class="float-right">
     <button class="create" id="add_property">Add Property</button>
-    <table id="table_id" class="display">
+  </div>
+    
+  <table id="table_id" class="display">
     <thead>
-        <tr>
-            <th>Key </th>
-            <th>Value</th>
-            <th></th>
-            <th></th>
-        </tr>
+      <tr>
+          <th>Key </th>
+          <th>Value</th>
+          <th></th>
+          <th></th>
+      </tr>
     </thead>
     <tbody>
         
     </tbody>
-</table>
-
+  </table>
 </div>
 
-<div id="edit_pane" style="display: none;">
-
-<div class="form-group">
-  <span class="current">Edit property</span>
-  <label for="city">City</label>
-  <input type="text" id="city" style="width: 150px;">
-</div>
-<div class="form-group">
-  <label for="city">City</label>
-  <input type="text" id="city" style="width: 150px;">
-</div>
+<div id="edit_pane" class="center" style="display: none;">
+  <h3>
+    <span class="current">Edit property</span>
+  </h3>
+  
+  <div class="form-group margin-bottom">
+    <label for="city">Key</label>
+    <input type="text" id="edit_key" style="width: 160px;">
   </div>
 
-<div id="add_pane" style="display: none;">
+  <div class="form-group margin-bottom">
+    <label for="city">Value</label>
+    <input type="text" id="edit_value" style="width: 160px;">
+  </div>
+
+  <button class="create">Edit</button>
+  <button onclick="selectPane('data_pane')">Close</button>
+</div>
+
+<div id="add_pane" class="center" style="display: none;">
+  <h3>
     <span class="current">Add property</span>
-<div class="form-group">
-  <label for="city">City</label>
-  <input type="text" id="city" style="width: 150px;">
-</div>
-<div class="form-group">
-  <label for="city">City</label>
-  <input type="text" id="city" style="width: 150px;">
-</div>
+  </h3>
+  
+  <div class="form-group margin-bottom">
+    <label for="city">Key</label>
+    <input type="text" id="add_key" style="width: 160px;">
   </div>
+
+  <div class="form-group margin-bottom">
+    <label for="city">Value</label>
+    <input type="text" id="add_value" style="width: 160px;">
+  </div>
+
+  <button class="create">Add</button>
+  <button onclick="selectPane('data_pane')">Close</button>
+</div>
 
 
 <script>
@@ -63,6 +94,12 @@ $(document).on('click', '.edit_line', function(){
    var key = $(this).data("key");
    var value = $(this).data("value");
    selectPane("edit_pane");
+  });
+
+
+
+$(document).on('click', '#add_property', function(){
+   selectPane("add_pane");
   });
 
 function selectPane(pane_id) {
@@ -79,9 +116,7 @@ function selectPane(pane_id) {
   
 }
 
-$('#add_property').click(function() {
-    google.script.run.add_property();
- });
+
 
 function displayTable(data) {
   $('#table_id').DataTable( {
