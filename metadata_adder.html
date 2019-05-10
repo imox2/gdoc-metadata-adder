@@ -15,6 +15,10 @@
   .margin-bottom {
     margin-bottom: 4%
   }
+
+  .margin-top {
+    margin-top: 20%;
+  }
 </style>
 
 <div id="loading_pane">
@@ -40,7 +44,10 @@
   <div class="float-right">
     <button class="create" id="add_property">Add Property</button>
   </div>
-    
+
+  <div id="no_property_msg" class="margin-top" style="display: none;">
+    <p class="center"> No properties exist. Add one?</p>
+  </div> 
   <table id="table_id" class="display">
     <thead>
       <tr>
@@ -60,18 +67,20 @@
   <h3>
     <span class="current">Edit property</span>
   </h3>
+
+ 
   
   <div class="form-group margin-bottom">
     <label for="city">Key</label>
-    <input type="text" id="edit_key" style="width: 160px;">
+    <input type="text" id="edit_key" disabled style="width: 160px;">
   </div>
 
   <div class="form-group margin-bottom">
     <label for="city">Value</label>
     <input type="text" id="edit_value" style="width: 160px;">
   </div>
-
-  <button class="create">Edit</button>
+  <p class="current" id="error_save_edit" style="display: none;">Add Value before saving</p>
+  <button onclick="editProperty()" id="edit_property" class="create">Edit</button>
   <button onclick="selectPane('data_pane')">Close</button>
 </div>
 
@@ -89,8 +98,9 @@
     <label for="city">Value</label>
     <input type="text" id="add_value" style="width: 160px;">
   </div>
+  <p class="current" id="error_save_add" style="display: none;">Add Both Key Value before saving</p>
 
-  <button class="create">Add</button>
+  <button class="create" id="create_property" onclick="addNewProperty()">Add</button>
   <button onclick="selectPane('data_pane')">Close</button>
 </div>
 
@@ -105,13 +115,71 @@ $(document).on('click', '.edit_line', function(){
 
 
 
+$(document).on('click', '.delete_line', function(){
+   var key = $(this).data("key");
+   var value = $(this).data("value");
+   console.log("delete_link",key);
+   getConfirmation(key);
+  });
+
+
+
 $(document).on('click', '#add_property', function(){
+  refreshAddNew();
    selectPane("add_pane");
   });
+
+function editProperty(){
+//(old_key,new_key,value)
+  $('#edit_property').prop('disabled', true)
+  var key = $('#edit_key').val();
+  var value = $('#edit_value').val();
+
+  if(value=='') {
+    $("#error_save_edit").show();
+    $('#edit_property').prop('disabled', false)
+  }
+  else {
+   google.script.run.withSuccessHandler(reloadDataPane)
+          .addCustomProperty(key,value);
+  }
+
+}
+
+function refreshAddNew() {
+  $('#add_key').val('');
+  $('#add_value').val('');
+  $('#create_property').prop('disabled', false)
+  
+}
+
+
+function addNewProperty() {
+  $('#create_property').prop('disabled', true)
+  var key = $('#add_key').val();
+  var value = $('#add_value').val();
+
+  if(key=='' || value=='') {
+    $("#error_save_add").show();
+    $('#create_property').prop('disabled', false)
+  }
+  else {
+   google.script.run.withSuccessHandler(reloadDataPane)
+          .addCustomProperty(key,value);
+  }
+}
+
+function getConfirmation(key) {
+  google.script.run.withSuccessHandler(reloadDataPane)
+          .showAlert(key);
+}
+
+
 
 function populateEditPane(key,value) {
   $('#edit_key').val(key);
   $('#edit_value').val(value);
+  $('#edit_property').prop('disabled', false)
   selectPane("edit_pane");
 }
 
@@ -130,9 +198,25 @@ function selectPane(pane_id) {
 }
 
 
+function reloadDataPane(reload=1) {
+  if(reload) {
+    $('#table_id').DataTable().clear().destroy();
+    //$('#table_id').empty();
+
+    google.script.run.withSuccessHandler(displayTable)
+            .getCustomProperties();
+
+    selectPane("data_pane");
+  }
+}
+
+
 
 function displayTable(data) {
-  $('#table_id').DataTable( {
+  var status = data.status;
+  data = data.data
+  if(status==1) {
+    $('#table_id').DataTable( {
     data: data,
     columns: [
         { data: 'key' },
@@ -161,6 +245,14 @@ function displayTable(data) {
 
   $('#loading_pane').hide();
   $('#data_pane').show();
+  }
+  else {
+    $('#loading_pane').hide();
+    $('#table_id').empty();
+    $('#data_pane').show();
+    $('#no_property_msg').show();
+  }
+  
 }
 
 

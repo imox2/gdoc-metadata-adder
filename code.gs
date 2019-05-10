@@ -11,16 +11,26 @@ function onOpen() {
   .addToUi();  // Run the showSidebar function when someone clicks the menu
 }
 
-function add_property(){ 
-  //Call the HTML file and set the width and height
-  var html = HtmlService.createHtmlOutputFromFile("add_new")
-    .setWidth(450)
-    .setHeight(300);
-  
-  //Display the dialog
-  var dialog = ui.showModalDialog(html, "Add new property key value");
- 
-};
+function showAlert(key) {
+ // deleteCustomProperty(key);
+  var ui = DocumentApp.getUi(); // Same variations.
+  var message = 'Are you sure you want to delete the key : {key}?';
+  message = message.replace('{key}',key);
+  var result = ui.alert(
+     'Please confirm',
+     message,
+      ui.ButtonSet.YES_NO);
+
+  // Process the user's response.
+  if (result == ui.Button.YES) {
+    // User clicked "Yes".
+    deleteCustomProperty(key);
+  } else {
+    // User clicked "No" or X in the title bar.
+    return 0;
+  }
+}
+
 
 
 function findCustomPropertiesFromResult(data) {
@@ -57,40 +67,50 @@ function getCustomProperties() {
   var fileId = DocumentApp.getActiveDocument().getId()
   var propertyData = findCustomPropertiesFromResult(Drive.Properties.list(fileId));
   Logger.log(propertyData);
-  return propertyData['data'];
+
+
+  return propertyData;
 }
 
-function add_property(){ 
-  //Call the HTML file and set the width and height
-  var html = HtmlService.createHtmlOutputFromFile("add_new")
-    .setWidth(450)
-    .setHeight(300);
-  
-  //Display the dialog
-  DocumentApp.getUi().showModalDialog(html,"Add new property key value");
- // var dialog = ui.showModalDialog(html, "Add new property key value");
- 
-};
 
-// function addCustomProperty(fileId) {
-//   var property = {
-//     key: 'department',
-//     value: 'Sales',
-//     visibility: 'PUBLIC'
-//   };
-//   Drive.Properties.insert(property, fileId);
-// }
+function deleteCustomProperty(key) {
+  var fileId = DocumentApp.getActiveDocument().getId();
 
-// function processMetadataForm() {
-//   return getCustomProperties();
+  var property = {
+    key: key,
+    value: null,
+    visibility: 'PUBLIC'
+  };
   
-  // var props=PropertiesService.getDocumentProperties()
-  // //Process each form element (atm, they are just input text elements)
+  var optionalArgs = {
+    "visibility" : "PUBLIC"
+  };
   
-  //   props.setProperty('talha','anwar')
-  //   Logger.log('ran process meta');
-  //}
+  
+  Drive.Properties.remove(fileId, key, optionalArgs);
+  return 1;
+}
 
+function updateCustomProperty(key,value) {
+  var fileId = DocumentApp.getActiveDocument().getId()
+  var property = {
+    key: key,
+    value: value,
+    visibility: 'PUBLIC'
+  };
+  Drive.Properties.insert(property, fileId);
+}
+
+
+function addCustomProperty(key,value) {
+  var fileId = DocumentApp.getActiveDocument().getId()
+  var property = {
+    key: key,
+    value: value,
+    visibility: 'PUBLIC'
+  };
+  Drive.Properties.insert(property, fileId);
+}
 
 
 /* Show a 300px sidebar with the HTML from googlemaps.html */
