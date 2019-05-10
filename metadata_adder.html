@@ -35,6 +35,12 @@
 
 <script>
 
+$(document).on('click', '.edit_line', function(){
+   var key = $(this).data("key");
+   var value = $(this).data("value");
+  
+  });
+
 $('#add_property').click(function() {
     google.script.run.add_property();
  });
@@ -47,12 +53,18 @@ function displayTable(data) {
         { data: 'value' },
         {
             mRender: function (data, type, row) {
-                    return '<a href="">edit</a>';
+                    var edit_link = '<a href="javascript:void();" class="edit_line" data-key="{key}" data-value="{value}">edit</a>';
+                    edit_link = edit_link.replace('{key}',row.key);
+                    edit_link = edit_link.replace('{value}',row.value);
+                    return edit_link;
             }
         },
         {
             mRender: function (data, type, row) {
-                    return '<a href="">delete</a>';
+                    var delete_link = '<a href="javascript:void();" class="delete_line" data-key="{key}" data-value="{value}">delete</a>';
+                    delete_link = delete_link.replace('{key}',row.key);
+                    delete_link = delete_link.replace('{value}',row.value);
+                    return delete_link;
             }
         }
     ],
@@ -69,7 +81,7 @@ function displayTable(data) {
  $(function() {
 
   google.script.run.withSuccessHandler(displayTable)
-          .processMetadataForm();
+          .getCustomProperties();
 
   //google.script.run.insertGoogleMap($('#search').val());
    
