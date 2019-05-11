@@ -231,6 +231,7 @@ function getConfirmation(key) {
 
 
 function populateEditPane(key,value) {
+  $("#error_save_edit").hide();
   $('#edit_key').val(key);
   $('#edit_value').val(value);
   $('#edit_property').prop('disabled', false)
