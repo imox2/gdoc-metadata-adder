@@ -12,6 +12,10 @@
     left: 69px;
   }
 
+  #data-panes {
+    z-index: 8;
+  }
+
   .margin-bottom {
     margin-bottom: 4%
   }
@@ -19,10 +23,56 @@
   .margin-top {
     margin-top: 20%;
   }
+
+  .overlay {
+    z-index: 7;
+    opacity: 0.5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: #222;
+}
+
+.overlay__inner {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.overlay__content {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner {
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.05);
+    border-top-color: #fff;
+    animation: spin 1s infinite linear;
+    border-radius: 100%;
+    border-style: solid;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
-<div id="loading_pane">
-  <h3 class="center">Loading...</h3>
+<div id="loading_pane" class="overlay">
+    <div class="overlay__inner">
+        <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
 </div>
 
 <link href="https://ssl.gstatic.com/docs/script/css/add-ons.css"
@@ -36,8 +86,7 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
 
-
-
+<div id="data_panes">
 
 <!-- The sidebar will have a input box and the search button -->
 <div class="sidebar" id="data_pane" style="display: none;">
@@ -102,6 +151,7 @@
 
   <button class="create" id="create_property" onclick="addNewProperty()">Add</button>
   <button onclick="selectPane('data_pane')">Close</button>
+</div>
 </div>
 
 
@@ -170,6 +220,8 @@ function addNewProperty() {
 }
 
 function getConfirmation(key) {
+  //$('#data_panes').hide();
+  $('#loading_pane').show();
   google.script.run.withSuccessHandler(reloadDataPane)
           .showAlert(key);
 }
@@ -210,6 +262,11 @@ function reloadDataPane(reload=1) {
 
     selectPane("data_pane");
   }
+  else {
+  
+  $('#loading_pane').hide();
+  $('#data_panes').show();
+  }
 }
 
 
@@ -248,11 +305,13 @@ function displayTable(data) {
   } );
 
   $('#loading_pane').hide();
+  $('#data_panes').show();
   $('#show_key_value_header').show();
   $('#data_pane').show();
   }
   else {
     $('#loading_pane').hide();
+    $('#data_panes').show();
     $('#show_key_value_header').hide();
     $('#data_pane').show();
     $('#no_property_msg').show();
