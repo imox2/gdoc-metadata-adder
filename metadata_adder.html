@@ -33,40 +33,40 @@
     height: 100%;
     position: fixed;
     background: #222;
-}
+  }
 
-.overlay__inner {
+  .overlay__inner {
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     position: absolute;
-}
+  }
 
-.overlay__content {
+  .overlay__content {
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-}
-
-.spinner {
-    width: 75px;
-    height: 75px;
-    display: inline-block;
-    border-width: 2px;
-    border-color: rgba(255, 255, 255, 0.05);
-    border-top-color: #fff;
-    animation: spin 1s infinite linear;
-    border-radius: 100%;
-    border-style: solid;
-}
-
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
   }
-}
+
+  .spinner {
+      width: 75px;
+      height: 75px;
+      display: inline-block;
+      border-width: 2px;
+      border-color: rgba(255, 255, 255, 0.05);
+      border-top-color: #fff;
+      animation: spin 1s infinite linear;
+      border-radius: 100%;
+      border-style: solid;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>
 
 <div id="loading_pane" class="overlay">
@@ -88,70 +88,72 @@
 
 <div id="data_panes">
 
-<!-- The sidebar will have a input box and the search button -->
-<div class="sidebar" id="data_pane" style="display: none;">
-  <div class="float-right">
-    <button class="create" id="add_property">Add Property</button>
+  <div class="sidebar" id="data_pane" style="display: none;">
+    <div class="float-right">
+      <button class="create" id="add_property">Add Property</button>
+    </div>
+
+    <div id="no_property_msg" class="margin-top" style="display: none;">
+      <p class="center"> No properties exist. Add one?</p>
+    </div> 
+
+    <table id="table_id" class="display">
+      <thead>
+        <tr id="show_key_value_header">
+            <th>Key </th>
+            <th>Value</th>
+            <th></th>
+            <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          
+      </tbody>
+    </table>
   </div>
 
-  <div id="no_property_msg" class="margin-top" style="display: none;">
-    <p class="center"> No properties exist. Add one?</p>
-  </div> 
-  <table id="table_id" class="display">
-    <thead>
-      <tr id="show_key_value_header">
-          <th>Key </th>
-          <th>Value</th>
-          <th></th>
-          <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        
-    </tbody>
-  </table>
-</div>
+  <div id="edit_pane" class="center" style="display: none;">
+    <h3>
+      <span class="current">Edit property</span>
+    </h3>
 
-<div id="edit_pane" class="center" style="display: none;">
-  <h3>
-    <span class="current">Edit property</span>
-  </h3>
+    <div class="form-group margin-bottom">
+      <label for="city">Key</label>
+      <input type="text" id="edit_key" disabled style="width: 160px;">
+    </div>
 
- 
-  
-  <div class="form-group margin-bottom">
-    <label for="city">Key</label>
-    <input type="text" id="edit_key" disabled style="width: 160px;">
+    <div class="form-group margin-bottom">
+      <label for="city">Value</label>
+      <input type="text" id="edit_value" style="width: 160px;">
+    </div>
+
+    <p class="current" id="error_save_edit" style="display: none;">Add Value before saving</p>
+    <button onclick="editProperty()" id="edit_property" class="create">Edit</button>
+    <button onclick="selectPane('data_pane')">Close</button>
+
   </div>
 
-  <div class="form-group margin-bottom">
-    <label for="city">Value</label>
-    <input type="text" id="edit_value" style="width: 160px;">
-  </div>
-  <p class="current" id="error_save_edit" style="display: none;">Add Value before saving</p>
-  <button onclick="editProperty()" id="edit_property" class="create">Edit</button>
-  <button onclick="selectPane('data_pane')">Close</button>
-</div>
+  <div id="add_pane" class="center" style="display: none;">
+    <h3>
+      <span class="current">Add property</span>
+    </h3>
+    
+    <div class="form-group margin-bottom">
+      <label for="city">Key</label>
+      <input type="text" id="add_key" style="width: 160px;">
+    </div>
 
-<div id="add_pane" class="center" style="display: none;">
-  <h3>
-    <span class="current">Add property</span>
-  </h3>
-  
-  <div class="form-group margin-bottom">
-    <label for="city">Key</label>
-    <input type="text" id="add_key" style="width: 160px;">
+    <div class="form-group margin-bottom">
+      <label for="city">Value</label>
+      <input type="text" id="add_value" style="width: 160px;">
+    </div>
+
+    <p class="current" id="error_save_add" style="display: none;">Add Both Key Value before saving</p>
+    <button class="create" id="create_property" onclick="addNewProperty()">Add</button>
+    <button onclick="selectPane('data_pane')">Close</button>
+
   </div>
 
-  <div class="form-group margin-bottom">
-    <label for="city">Value</label>
-    <input type="text" id="add_value" style="width: 160px;">
-  </div>
-  <p class="current" id="error_save_add" style="display: none;">Add Both Key Value before saving</p>
-
-  <button class="create" id="create_property" onclick="addNewProperty()">Add</button>
-  <button onclick="selectPane('data_pane')">Close</button>
-</div>
 </div>
 
 
@@ -248,6 +250,8 @@ function selectPane(pane_id) {
   }
   
 }
+
+
 
 
 function reloadDataPane(reload=1) {
