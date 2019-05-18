@@ -46,8 +46,6 @@ function findCustomPropertiesFromResult(data) {
           temp['key'] = items[key]['key'];
           temp['value'] = items[key]['value'];
 
-           Logger.log(temp['value']);
-
           foundData['data'].push(temp)
         }
 
@@ -66,8 +64,6 @@ function findCustomPropertiesFromResult(data) {
 function getCustomProperties() {
   var fileId = DocumentApp.getActiveDocument().getId()
   var propertyData = findCustomPropertiesFromResult(Drive.Properties.list(fileId));
-  Logger.log(propertyData);
-
 
   return propertyData;
 }
