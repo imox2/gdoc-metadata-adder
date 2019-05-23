@@ -11,6 +11,10 @@ function onOpen() {
   .addToUi();  // Run the showSidebar function when someone clicks the menu
 }
 
+function invalidate() {
+  ScriptApp.invalidateAuth();
+}
+
 function showAlert(key) {
  // deleteCustomProperty(key);
   var ui = DocumentApp.getUi(); // Same variations.
