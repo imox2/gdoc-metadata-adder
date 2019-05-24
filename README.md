@@ -8,3 +8,6 @@ You can read more about [custom properties](https://developers.google.com/drive/
 ## Use Case:
 
  - I want Drive api to fetch only those docs which I have published. In this scenario I will add custom properties to those docs ***eg {type:published}*** then using Drive api I will fetch only such docs. As Properties can also be used in [search expressions](https://developers.google.com/drive/api/v3/search-files#properties).
+
+## Live Add On:
+The add is now live on [chrome store](https://chrome.google.com/webstore/detail/gdoc-metadata-adder/nfndchcnoegibahignhlciiicaenoiic)
